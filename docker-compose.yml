@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  web:
+    image: jonataserpa/ms-customer:latest
+    container_name: web
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        PHP_VERSION: "8.2.4-fpm-bullseye"
+    volumes:
+      - ./app:/var/www/app
+    ports:
+      - "8890:80" #http
+      - "443:443" #https
+    networks:
+      - customer
+
+  # redis
+  redis:
+    image: redis:latest
+    networks:
+      - customer
+
+networks:
+  customer:
+    driver: bridge
